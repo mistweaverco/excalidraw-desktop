@@ -51,8 +51,6 @@ jobs:
           workspaces: "./src-tauri -> target"
       - name: Install dependencies
         run: vp install
-      - name: Sync SvelteKit
-        run: vp run sv-sync
       - name: Build Tauri App
         run: vp build
       - name: Upload Linux artifacts
@@ -96,8 +94,6 @@ jobs:
           workspaces: "./src-tauri -> target"
       - name: Install dependencies
         run: vp install
-      - name: Sync SvelteKit
-        run: vp run sv-sync
       - name: Build Tauri App
         run: vp build
       - name: Install the Apple certificate, provisioning profile, and API key
@@ -201,8 +197,6 @@ jobs:
           workspaces: "./src-tauri -> target"
       - name: Install dependencies
         run: vp install
-      - name: Sync SvelteKit
-        run: vp run sv-sync
       - name: Build Tauri App
         run: vp build
       - name: Upload Windows artifact
