@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "pnpm build:excalidraw && vite dev",
     "build": "NO_STRIP=true tauri build",
-    "build:svelte": "vite build",
+    "build:svelte": "svelte-kit sync && vite build",
     "build:excalidraw": "node scripts/build-excalidraw.mjs",
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",

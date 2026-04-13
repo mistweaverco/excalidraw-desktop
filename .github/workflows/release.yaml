@@ -206,7 +206,9 @@ jobs:
         uses: actions/upload-artifact@v7.0.0
         with:
           name: windows-artifacts
-          path: src-tauri/target/release/bundle/windows/
+          path: |
+            src-tauri/target/release/bundle/msi/
+            src-tauri/target/release/bundle/nsis/
           if-no-files-found: error
   publish-release:
     name: Publish GitHub Release
@@ -236,12 +238,16 @@ jobs:
         uses: actions/download-artifact@v8.0.1
         with:
           name: macos-artifacts
-          path: src-tauri/target/release/bundle/macos/
+          path: |
+            src-tauri/target/release/bundle/macos/
+            src-tauri/target/release/bundle/dmg/
       - name: Download Windows artifacts
         uses: actions/download-artifact@v8.0.1
         with:
           name: windows-artifacts
-          path: src-tauri/target/release/bundle/windows/
+          path: |
+            src-tauri/target/release/bundle/msi/
+            src-tauri/target/release/bundle/nsis/
       - name: Publish release with all artifacts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

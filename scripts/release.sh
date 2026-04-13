@@ -18,7 +18,8 @@ MACOS_FILES=(
 )
 
 WINDOWS_FILES=(
-  "src-tauri/target/release/bundle/msi/${BIN_NAME}-${VERSION}-x64.msi"
+  "src-tauri/target/release/bundle/msi/${BIN_NAME}_${VERSION}_x64_en-US.msi"
+  "src-tauri/target/release/bundle/nsis/${BIN_NAME}_${VERSION}_x64-setup.exe"
 )
 
 check_files_exist() {
