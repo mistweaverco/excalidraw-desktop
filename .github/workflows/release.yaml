@@ -270,8 +270,6 @@ jobs:
           sed -i "s/pkgver=.*/pkgver=$VERSION/" ./scripts/PKGBUILD
       - name: Publish to AUR
         uses: KSXGitHub/github-actions-deploy-aur@v4.1.1
-        env:
-          CHANGELOG_SOURCE_FILE: internal/changelog/changelog.md
         with:
           pkgname: excalidraw-desktop-bin
           pkgbuild: ./scripts/PKGBUILD
