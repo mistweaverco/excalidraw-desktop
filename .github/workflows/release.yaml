@@ -52,6 +52,7 @@ jobs:
       - name: Rust cache
         uses: swatinem/rust-cache@v2
         with:
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
           workspaces: "./src-tauri -> target"
       - name: Install dependencies
         run: vp install
@@ -95,6 +96,7 @@ jobs:
       - name: Rust cache
         uses: swatinem/rust-cache@v2
         with:
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
           workspaces: "./src-tauri -> target"
       - name: Install dependencies
         run: vp install
@@ -194,6 +196,7 @@ jobs:
       - name: Rust cache
         uses: swatinem/rust-cache@v2
         with:
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
           workspaces: "./src-tauri -> target"
       - name: Install dependencies
         run: vp install
