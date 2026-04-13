@@ -217,23 +217,17 @@ jobs:
         uses: actions/download-artifact@v8.0.1
         with:
           name: linux-artifacts
-          path: |
-            src-tauri/target/release/bundle/deb/
-            src-tauri/target/release/bundle/rpm/
-            src-tauri/target/release/bundle/appimage/
+          path: src-tauri/target/release/bundle/
       - name: Download macOS artifacts
         uses: actions/download-artifact@v8.0.1
         with:
           name: macos-artifacts
-          path: |
-            src-tauri/target/release/bundle/macos/
+          path: src-tauri/target/release/bundle/macos/
       - name: Download Windows artifacts
         uses: actions/download-artifact@v8.0.1
         with:
           name: windows-artifacts
-          path: |
-            src-tauri/target/release/bundle/msi/
-            src-tauri/target/release/bundle/nsis/
+          path: src-tauri/target/release/bundle/
       - name: Publish release with all artifacts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
