@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm build:excalidraw && vite dev",
-    "build": "tauri build",
+    "build": "NO_STRIP=true tauri build",
     "build:prepare": "svelte-kit sync",
     "build:svelte": "vite build",
     "build:excalidraw": "node scripts/build-excalidraw.mjs",
