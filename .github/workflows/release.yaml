@@ -119,7 +119,7 @@ jobs:
           export CODESIGNING_PREFIX=$(base64 --decode <<< "$CODESIGNING_PREFIX")
           codesign --sign "$CODESIGNING_IDENTITY" \
             --prefix "$CODESIGNING_PREFIX" \
-            --options runtime src-tauri/target/release/bundle/macos/macos/Excalidraw Desktop.app
+            --options runtime "src-tauri/target/release/bundle/macos/macos/Excalidraw Desktop.app"
       - name: Sign the arm64 binary
         env:
           CODESIGNING_IDENTITY: ${{ secrets.APPLE_CODESIGNING_IDENTITY }}
@@ -129,11 +129,11 @@ jobs:
           export CODESIGNING_PREFIX=$(base64 --decode <<< "$CODESIGNING_PREFIX")
           codesign --sign "$CODESIGNING_IDENTITY" \
             --prefix "$CODESIGNING_PREFIX" \
-            --options runtime src-tauri/target/release/bundle/dmg/Excalidraw Desktop_0.1.0_aarch64.dmg
+            --options runtime "src-tauri/target/release/bundle/dmg/Excalidraw Desktop_0.1.0_aarch64.dmg"
       - name: Zip the amd64 binary for notarization
-        run: zip -r excalidraw-desktop-darwin-amd64.zip src-tauri/target/release/bundle/macos/excalidraw-desktop.app
+        run: zip -r excalidraw-desktop-darwin-amd64.zip "src-tauri/target/release/bundle/macos/Excalidraw Desktop.app"
       - name: Zip the arm64 binary for notarization
-        run: zip -r excalidraw-desktop-darwin-arm64.zip src-tauri/target/release/bundle/dmg/Excalidraw\ Desktop_0.1.0_aarch64.dmg
+        run: zip -r excalidraw-desktop-darwin-arm64.zip "src-tauri/target/release/bundle/dmg/Excalidraw\ Desktop_0.1.0_aarch64.dmg"
       - name: Upload the amd64 binary for notarization
         env:
           KEY_ID: ${{ secrets.APPLE_KEY_ID }}
