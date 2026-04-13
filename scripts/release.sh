@@ -33,8 +33,6 @@ check_files_exist() {
     for file in "${files[@]}"; do
       printf " - %s\n" "$file"
     done
-    echo "This is the content of the dist directory:"
-    ls -l dist/
     exit 1
   fi
 }
@@ -61,7 +59,6 @@ do_gh_release() {
 }
 
 release() {
-  set_release_action
   merge_all_platform_files
   check_files_exist
   do_gh_release
