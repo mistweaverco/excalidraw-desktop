@@ -52,7 +52,7 @@ jobs:
       - name: Install dependencies
         run: vp install
       - name: Build Tauri App
-        run: vp build
+        run: vp run build
       - name: Upload Linux artifacts
         uses: actions/upload-artifact@v7.0.0
         with:
@@ -95,7 +95,7 @@ jobs:
       - name: Install dependencies
         run: vp install
       - name: Build Tauri App
-        run: vp build
+        run: vp run build
       - name: Install the Apple certificate, provisioning profile, and API key
         id: keychain
         env:
@@ -198,7 +198,7 @@ jobs:
       - name: Install dependencies
         run: vp install
       - name: Build Tauri App
-        run: vp build
+        run: vp run build
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v7.0.0
         with:
