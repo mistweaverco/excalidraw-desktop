@@ -36,11 +36,17 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt install -y \
-          libwebkit2gtk-4.1-dev \
+          7zip \
+          bash \
+          build-essential \
+          curl \
+          git \
           libappindicator3-dev \
           librsvg2-dev \
-          patchelf \
           libudev-dev \
+          libwebkit2gtk-4.1-dev \
+          patchelf \
+          unzip \
           xdg-utils
       - name: Set up Vite+
         uses: voidzero-dev/setup-vp@v1
