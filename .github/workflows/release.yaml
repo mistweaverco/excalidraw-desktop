@@ -66,6 +66,7 @@ jobs:
       - name: Build Tauri App
         env:
           NO_STRIP: true
+          APPIMAGE_EXTRACT_AND_RUN: 1
         run: vp run build
       - name: Upload Linux artifacts
         uses: actions/upload-artifact@v7.0.0
