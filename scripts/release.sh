@@ -10,7 +10,7 @@ FILES=()
 
 LINUX_FILES=(
   "src-tauri/target/release/bundle/deb/${BIN_NAME}_${VERSION}_amd64.deb"
-  "src-tauri/target/release/bundle/rpm/${BIN_NAME}-${VERSION}.x86_64.rpm"
+  "src-tauri/target/release/bundle/rpm/${BIN_NAME}-${VERSION}-1.x86_64.rpm"
   "src-tauri/target/release/bundle/appimage/${BIN_NAME}_${VERSION}_amd64.AppImage"
 )
 
