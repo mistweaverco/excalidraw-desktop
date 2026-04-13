@@ -119,7 +119,7 @@ jobs:
           export CODESIGNING_PREFIX=$(base64 --decode <<< "$CODESIGNING_PREFIX")
           codesign --sign "$CODESIGNING_IDENTITY" \
             --prefix "$CODESIGNING_PREFIX" \
-            --options runtime "src-tauri/target/release/bundle/macos/macos/Excalidraw Desktop.app"
+            --options runtime "src-tauri/target/release/bundle/macos/Excalidraw Desktop.app"
       - name: Sign the arm64 binary
         env:
           CODESIGNING_IDENTITY: ${{ secrets.APPLE_CODESIGNING_IDENTITY }}
