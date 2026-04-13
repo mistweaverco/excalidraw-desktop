@@ -64,6 +64,8 @@ jobs:
       - name: Install dependencies
         run: vp install
       - name: Build Tauri App
+        env:
+          NO_STRIP: true
         run: vp run build
       - name: Upload Linux artifacts
         uses: actions/upload-artifact@v7.0.0
@@ -136,11 +138,9 @@ jobs:
           export CODESIGNING_PREFIX=$(base64 --decode <<< "$CODESIGNING_PREFIX")
           codesign --sign "$CODESIGNING_IDENTITY" \
             --prefix "$CODESIGNING_PREFIX" \
-            --options runtime "src-tauri/target/release/bundle/dmg/Excalidraw Desktop_0.1.0_aarch64.dmg"
+            --options runtime "src-tauri/target/release/bundle/dmg/Excalidraw Desktop_${VERSION}_aarch64.dmg"
       - name: Zip the amd64 binary for notarization
         run: zip -r excalidraw-desktop-darwin-amd64.zip "src-tauri/target/release/bundle/macos/Excalidraw Desktop.app"
-      - name: Zip the arm64 binary for notarization
-        run: zip -r excalidraw-desktop-darwin-arm64.zip "src-tauri/target/release/bundle/dmg/Excalidraw Desktop_0.1.0_aarch64.dmg"
       - name: Upload the amd64 binary for notarization
         env:
           KEY_ID: ${{ secrets.APPLE_KEY_ID }}
@@ -160,7 +160,7 @@ jobs:
         run: |
           export KEY_ID=$(base64 --decode <<< "$KEY_ID")
           export ISSUER=$(base64 --decode <<< "$ISSUER")
-          xcrun notarytool submit excalidraw-desktop-darwin-arm64.zip \
+          xcrun notarytool submit "src-tauri/target/release/bundle/dmg/Excalidraw Desktop_${VERSION}_aarch64.dmg" \
             --key "${{ steps.keychain.outputs.auth_key_path }}" \
             --key-id "$KEY_ID" \
             --issuer "$ISSUER" \
