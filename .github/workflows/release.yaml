@@ -63,7 +63,8 @@ jobs:
         env:
           NO_STRIP: true
           APPIMAGE_EXTRACT_AND_RUN: 1
-        run: vp run build
+          STRIP: 0
+        run: tauri build
       - name: Upload Linux artifacts
         uses: actions/upload-artifact@v7.0.0
         with:
@@ -102,7 +103,7 @@ jobs:
       - name: Install dependencies
         run: vp install
       - name: Build Tauri App
-        run: vp run build
+        run: tauri build
       - name: Install the Apple certificate, provisioning profile, and API key
         id: keychain
         env:
@@ -187,7 +188,7 @@ jobs:
       - name: Install dependencies
         run: vp install
       - name: Build Tauri App
-        run: vp run build
+        run: tauri build
       - name: Upload Windows artifacts
         uses: actions/upload-artifact@v7.0.0
         with:
