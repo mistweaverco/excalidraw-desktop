@@ -32,6 +32,10 @@ jobs:
           VERSION=${GITHUB_REF_NAME#v}
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "TARGET_PLATFORM=linux" >> $GITHUB_ENV
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libglib2.0-dev
       - name: Set up Vite+
         uses: voidzero-dev/setup-vp@v1
         with:
