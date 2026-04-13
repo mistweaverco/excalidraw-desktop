@@ -249,7 +249,7 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           sed -i "s/pkgver=.*/pkgver=$VERSION/" ./scripts/PKGBUILD
       - name: Publish to AUR
-        uses: KSXGitHub/github-actions-deploy-aur@v4.1.1
+        uses: KSXGitHub/github-actions-deploy-aur@v4.1.2
         with:
           pkgname: excalidraw-desktop-bin
           pkgbuild: ./scripts/PKGBUILD
