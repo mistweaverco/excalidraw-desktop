@@ -117,7 +117,7 @@ jobs:
           export CODESIGNING_PREFIX=$(base64 --decode <<< "$CODESIGNING_PREFIX")
           codesign --sign "$CODESIGNING_IDENTITY" \
             --prefix "$CODESIGNING_PREFIX" \
-            --options runtime src-tauri/target/release/bundle/macos/excalidraw-desktop.app/Contents/MacOS/excalidraw
+            --options runtime src-tauri/target/release/bundle/macos/macos/Excalidraw Desktop.app
       - name: Sign the arm64 binary
         env:
           CODESIGNING_IDENTITY: ${{ secrets.APPLE_CODESIGNING_IDENTITY }}
@@ -127,11 +127,11 @@ jobs:
           export CODESIGNING_PREFIX=$(base64 --decode <<< "$CODESIGNING_PREFIX")
           codesign --sign "$CODESIGNING_IDENTITY" \
             --prefix "$CODESIGNING_PREFIX" \
-            --options runtime src-tauri/target/release/bundle/macos/excalidraw-desktop.app/Contents/MacOS/excalidraw
+            --options runtime src-tauri/target/release/bundle/dmg/Excalidraw Desktop_0.1.0_aarch64.dmg
       - name: Zip the amd64 binary for notarization
         run: zip -r excalidraw-desktop-darwin-amd64.zip src-tauri/target/release/bundle/macos/excalidraw-desktop.app
       - name: Zip the arm64 binary for notarization
-        run: zip -r excalidraw-desktop-darwin-arm64.zip src-tauri/target/release/bundle/macos/excalidraw-desktop.app
+        run: zip -r excalidraw-desktop-darwin-arm64.zip src-tauri/target/release/bundle/dmg/Excalidraw\ Desktop_0.1.0_aarch64.dmg
       - name: Upload the amd64 binary for notarization
         env:
           KEY_ID: ${{ secrets.APPLE_KEY_ID }}
@@ -162,6 +162,7 @@ jobs:
           name: macos-artifacts
           path: |
             src-tauri/target/release/bundle/macos/
+            src-tauri/target/release/bundle/dmg/
           if-no-files-found: error
   build-windows:
     name: Build for Windows
@@ -177,11 +178,6 @@ jobs:
           $version = "${env:GITHUB_REF_NAME}".TrimStart('v')
           "VERSION=$version" >> $env:GITHUB_ENV
           "TARGET_PLATFORM=windows" >> $env:GITHUB_ENV
-      - name: Set up env
-        run: |
-          VERSION=${GITHUB_REF_NAME#v}
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "TARGET_PLATFORM=macos" >> $GITHUB_ENV
       - name: Set up Vite+
         uses: voidzero-dev/setup-vp@v1
         with:

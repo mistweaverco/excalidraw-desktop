@@ -13,8 +13,8 @@ LINUX_FILES=(
 )
 
 MACOS_FILES=(
-  "src-tauri/target/release/bundle/dmg/${BIN_NAME}-${VERSION}-x64.dmg"
-  "src-tauri/target/release/bundle/dmg/${BIN_NAME}-${VERSION}-arm64.dmg"
+  "src-tauri/target/release/bundle/macos/${BIN_NAME}.app"
+  "src-tauri/target/release/bundle/dmg/${BIN_NAME}_${VERSION}_aarch64.dmg"
 )
 
 WINDOWS_FILES=(
