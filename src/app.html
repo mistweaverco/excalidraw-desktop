@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%sveltekit.assets%/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Tauri + SvelteKit + Typescript App</title>
+    <!-- Before Excalidraw: Excalidraw reads ?addLibrary= from search, but hash-based installs are more reliable with useHandleLibrary. -->
+    <script>
+      (function () {
+        try {
+          var u = new URL(window.location.href);
+          if (!u.searchParams.has("addLibrary")) return;
+          var addLibrary = u.searchParams.get("addLibrary");
+          if (!addLibrary) return;
+          var p = new URLSearchParams();
+          p.set("addLibrary", addLibrary);
+          var token = u.searchParams.get("token");
+          if (token) p.set("token", token);
+          u.search = "";
+          u.hash = "#" + p.toString();
+          window.history.replaceState(null, "", u.toString());
+        } catch (e) {}
+      })();
+      (function () {
+        try {
+          var h = window.location.hash;
+          if (h.indexOf("&amp;") === -1) return;
+          var u = new URL(window.location.href);
+          u.hash = h.replace(/&amp;/g, "&");
+          window.history.replaceState(null, "", u.toString());
+        } catch (e) {}
+      })();
+    </script>
+    <style>
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+    </style>
+    %sveltekit.head%
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents">%sveltekit.body%</div>
+  </body>
+</html>

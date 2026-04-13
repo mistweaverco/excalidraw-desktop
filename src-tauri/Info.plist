@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>NSDocumentsFolderUsageDescription</key>
+    <string>Allow access to your Documents folder to read and save your files.</string>
+    <key>NSDownloadsFolderUsageDescription</key>
+    <string>Allow access to your Downloads folder to save exported files.</string>
+    <key>ITSAppUsesNonExemptEncryption</key>
+    <false/>
+</dict>
+</plist>

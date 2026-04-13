@@ -1,0 +1,279 @@
+---
+name: Release
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
+# Allow only one concurrent deployment,
+# skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want
+# to allow these production deployments to complete.
+concurrency:
+  group: "create-release"
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  packages: read
+
+jobs:
+  build-linux:
+    name: Build for Linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+        with:
+          fetch-depth: 0
+      - name: Set up env
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "TARGET_PLATFORM=linux" >> $GITHUB_ENV
+      - name: Set up Vite+
+        uses: voidzero-dev/setup-vp@v1
+        with:
+          node-version: 24
+      - name: Cache Vite-Plus dependencies
+        uses: actions/cache@v5.0.4
+        with:
+          path: ~/.vite-plus
+          key: app-linux-vite-plus-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            app-linux-vite-plus-${{ hashFiles('**/pnpm-lock.yaml') }}
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: "./src-tauri -> target"
+      - name: Install dependencies
+        run: vp install
+      - name: Sync SvelteKit
+        run: vp run sv-sync
+      - name: Build Tauri App
+        run: vp build
+      - name: Upload Linux artifacts
+        uses: actions/upload-artifact@v7.0.0
+        with:
+          name: linux-artifacts
+          path: |
+            src-tauri/target/release/bundle/deb/
+            src-tauri/target/release/bundle/rpm/
+            src-tauri/target/release/bundle/appimage/
+          if-no-files-found: error
+  build-macos:
+    name: Build for macOS
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+        with:
+          fetch-depth: 0
+      - name: Set up env
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "TARGET_PLATFORM=macos" >> $GITHUB_ENV
+      - name: Set up Vite+
+        uses: voidzero-dev/setup-vp@v1
+        with:
+          node-version: 24
+      - name: Cache Vite-Plus dependencies
+        uses: actions/cache@v5.0.4
+        with:
+          path: ~/.vite-plus
+          key: app-macos-vite-plus-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            app-macos-vite-plus-${{ hashFiles('**/pnpm-lock.yaml') }}
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: "./src-tauri -> target"
+      - name: Install dependencies
+        run: vp install
+      - name: Sync SvelteKit
+        run: vp run sv-sync
+      - name: Build Tauri App
+        run: vp build
+      - name: Install the Apple certificate, provisioning profile, and API key
+        id: keychain
+        env:
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.APPLE_BUILD_CERTIFICATE_BASE64 }}
+          P12_PASSWORD: ${{ secrets.APPLE_P12_PASSWORD }}
+          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.APPLE_BUILD_PROVISION_PROFILE_BASE64 }}
+          AUTH_KEY_BASE64: ${{ secrets.APPLE_AUTH_KEY_BASE64 }}
+        run: ./scripts/ci-import-apple-certs.sh
+      - name: Sign the amd64 binary
+        env:
+          CODESIGNING_IDENTITY: ${{ secrets.APPLE_CODESIGNING_IDENTITY }}
+          CODESIGNING_PREFIX: ${{ secrets.APPLE_CODESIGNING_PREFIX }}
+        run: |
+          export CODESIGNING_IDENTITY=$(base64 --decode <<< "$CODESIGNING_IDENTITY")
+          export CODESIGNING_PREFIX=$(base64 --decode <<< "$CODESIGNING_PREFIX")
+          codesign --sign "$CODESIGNING_IDENTITY" \
+            --prefix "$CODESIGNING_PREFIX" \
+            --options runtime src-tauri/target/release/bundle/macos/excalidraw-desktop.app/Contents/MacOS/excalidraw
+      - name: Sign the arm64 binary
+        env:
+          CODESIGNING_IDENTITY: ${{ secrets.APPLE_CODESIGNING_IDENTITY }}
+          CODESIGNING_PREFIX: ${{ secrets.APPLE_CODESIGNING_PREFIX }}
+        run: |
+          export CODESIGNING_IDENTITY=$(base64 --decode <<< "$CODESIGNING_IDENTITY")
+          export CODESIGNING_PREFIX=$(base64 --decode <<< "$CODESIGNING_PREFIX")
+          codesign --sign "$CODESIGNING_IDENTITY" \
+            --prefix "$CODESIGNING_PREFIX" \
+            --options runtime src-tauri/target/release/bundle/macos/excalidraw-desktop.app/Contents/MacOS/excalidraw
+      - name: Zip the amd64 binary for notarization
+        run: zip -r excalidraw-desktop-darwin-amd64.zip src-tauri/target/release/bundle/macos/excalidraw-desktop.app
+      - name: Zip the arm64 binary for notarization
+        run: zip -r excalidraw-desktop-darwin-arm64.zip src-tauri/target/release/bundle/macos/excalidraw-desktop.app
+      - name: Upload the amd64 binary for notarization
+        env:
+          KEY_ID: ${{ secrets.APPLE_KEY_ID }}
+          ISSUER: ${{ secrets.APPLE_ISSUER }}
+        run: |
+          export KEY_ID=$(base64 --decode <<< "$KEY_ID")
+          export ISSUER=$(base64 --decode <<< "$ISSUER")
+          xcrun notarytool submit excalidraw-desktop-darwin-amd64.zip \
+            --key "${{ steps.keychain.outputs.auth_key_path }}" \
+            --key-id "$KEY_ID" \
+            --issuer "$ISSUER" \
+            --wait
+      - name: Upload the arm64 binary for notarization
+        env:
+          KEY_ID: ${{ secrets.APPLE_KEY_ID }}
+          ISSUER: ${{ secrets.APPLE_ISSUER }}
+        run: |
+          export KEY_ID=$(base64 --decode <<< "$KEY_ID")
+          export ISSUER=$(base64 --decode <<< "$ISSUER")
+          xcrun notarytool submit excalidraw-desktop-darwin-arm64.zip \
+            --key "${{ steps.keychain.outputs.auth_key_path }}" \
+            --key-id "$KEY_ID" \
+            --issuer "$ISSUER" \
+            --wait
+      - name: Upload macOS amd64 artifact
+        uses: actions/upload-artifact@v7.0.0
+        with:
+          name: macos-artifacts
+          path: |
+            src-tauri/target/release/bundle/macos/
+          if-no-files-found: error
+  build-windows:
+    name: Build for Windows
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+        with:
+          fetch-depth: 0
+      - name: Set up env
+        shell: pwsh
+        run: |
+          $version = "${env:GITHUB_REF_NAME}".TrimStart('v')
+          "VERSION=$version" >> $env:GITHUB_ENV
+          "TARGET_PLATFORM=windows" >> $env:GITHUB_ENV
+      - name: Set up env
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "TARGET_PLATFORM=macos" >> $GITHUB_ENV
+      - name: Set up Vite+
+        uses: voidzero-dev/setup-vp@v1
+        with:
+          node-version: 24
+      - name: Cache Vite-Plus dependencies
+        uses: actions/cache@v5.0.4
+        with:
+          path: ~/.vite-plus
+          key: app-windows-vite-plus-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            app-windows-vite-plus-${{ hashFiles('**/pnpm-lock.yaml') }}
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: "./src-tauri -> target"
+      - name: Install dependencies
+        run: vp install
+      - name: Sync SvelteKit
+        run: vp run sv-sync
+      - name: Build Tauri App
+        run: vp build
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v7.0.0
+        with:
+          name: windows-artifacts
+          path: src-tauri/target/release/bundle/windows/
+          if-no-files-found: error
+  publish-release:
+    name: Publish GitHub Release
+    needs:
+      - build-linux
+      - build-macos
+      - build-windows
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+        with:
+          fetch-depth: 0
+      - name: Set up env
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+      - name: Download Linux artifacts
+        uses: actions/download-artifact@v8.0.1
+        with:
+          name: linux-artifacts
+          path: |
+            src-tauri/target/release/bundle/deb/
+            src-tauri/target/release/bundle/rpm/
+            src-tauri/target/release/bundle/appimage/
+      - name: Download macOS artifacts
+        uses: actions/download-artifact@v8.0.1
+        with:
+          name: macos-artifacts
+          path: src-tauri/target/release/bundle/macos/
+      - name: Download Windows artifacts
+        uses: actions/download-artifact@v8.0.1
+        with:
+          name: windows-artifacts
+          path: src-tauri/target/release/bundle/windows/
+      - name: Publish release with all artifacts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./scripts/release.sh
+  deploy-aur:
+    name: Deploy to AUR
+    needs: publish-release
+    runs-on: ubuntu-latest
+    container:
+      # INFO:  Use Arch image to access updpkgsums
+      image: archlinux:latest
+    steps:
+      - name: Install dependencies
+        run: pacman -Syu --noconfirm pacman-contrib git openssh
+      - uses: actions/checkout@v6.0.2
+      - name: Update Version in PKGBUILD
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          sed -i "s/pkgver=.*/pkgver=$VERSION/" ./scripts/PKGBUILD
+      - name: Publish to AUR
+        uses: KSXGitHub/github-actions-deploy-aur@v4.1.1
+        env:
+          CHANGELOG_SOURCE_FILE: internal/changelog/changelog.md
+        with:
+          pkgname: excalidraw-desktop-bin
+          pkgbuild: ./scripts/PKGBUILD
+          commit_username: ${{ secrets.AUR_USERNAME }}
+          commit_email: ${{ secrets.AUR_EMAIL }}
+          ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+          commit_message: "v${{ env.VERSION }}"
+          updpkgsums: true

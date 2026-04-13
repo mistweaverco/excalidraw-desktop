@@ -1,0 +1,14 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "excalidraw-remote-opener",
+  "description": "Allow opener when a webview is on Excalidraw library/catalog hosts (install redirects may use the opener plugin).",
+  "windows": ["main", "libraries"],
+  "remote": {
+    "urls": [
+      "https://libraries.excalidraw.com/*",
+      "https://excalidraw.com/*",
+      "https://*.excalidraw.com/*"
+    ]
+  },
+  "permissions": ["opener:default"]
+}
