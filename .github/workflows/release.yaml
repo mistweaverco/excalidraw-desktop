@@ -241,7 +241,6 @@ jobs:
           name: macos-artifacts
           path: |
             src-tauri/target/release/bundle/macos/
-            src-tauri/target/release/bundle/dmg/
       - name: Download Windows artifacts
         uses: actions/download-artifact@v8.0.1
         with:
