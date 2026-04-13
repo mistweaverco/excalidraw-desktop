@@ -144,7 +144,7 @@ jobs:
           export KEY_ID=$(base64 --decode <<< "$KEY_ID")
           export ISSUER=$(base64 --decode <<< "$ISSUER")
           # Submit the DMG
-          xcrun notarytool submit "Excalidraw_Desktop_aarch64.dmg" \
+          xcrun notarytool submit "src-tauri/target/release/bundle/macos/Excalidraw Desktop.dmg" \
             --key "${{ steps.keychain.outputs.auth_key_path }}" \
             --key-id "$KEY_ID" \
             --issuer "$ISSUER" \
