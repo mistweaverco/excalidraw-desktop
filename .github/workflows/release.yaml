@@ -35,7 +35,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo aptitude install -y \
+          sudo apt install -y \
             build-essential \
             libpango1.0-dev \
             libsoup2.4-dev \
