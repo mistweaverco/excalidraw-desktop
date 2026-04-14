@@ -19,6 +19,38 @@ permissions:
   packages: read
 
 jobs:
+  generate-changelog:
+    name: Generate Changelog
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+        with:
+          fetch-depth: 0
+      - uses: voidzero-dev/setup-vp@v1
+        with:
+          node-version: 24
+      - name: Cache Vite-Plus dependencies
+        uses: actions/cache@v5.0.4
+        with:
+          path: ~/.vite-plus
+          key: release-vite-plus-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            release-vite-plus-${{ hashFiles('**/pnpm-lock.yaml') }}
+      - name: Install dependencies
+        run: vp install
+      - name: Set up env
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+      - name: Generate changelog
+        run: vp run changelog
+      - name: Upload changelog artifact
+        uses: actions/upload-artifact@v7.0.0
+        with:
+          name: changelog
+          path: CHANGELOG.md
+          if-no-files-found: error
   build-linux:
     name: Build for Linux
     runs-on: ubuntu-latest
@@ -234,7 +266,9 @@ jobs:
         run: ./scripts/release.sh
   deploy-aur:
     name: Deploy to AUR
-    needs: publish-release
+    needs:
+      - generate-changelog
+      - publish-release
     runs-on: ubuntu-latest
     container:
       # INFO:  Use Arch image to access updpkgsums
@@ -243,18 +277,36 @@ jobs:
       - name: Install dependencies
         run: pacman -Syu --noconfirm pacman-contrib git openssh
       - uses: actions/checkout@v6.0.2
+      - name: Download changelog artifact
+        uses: actions/download-artifact@v8.0.1
+        with:
+          name: changelog
+          path: CHANGELOG.md
       - name: Update Version in PKGBUILD
         run: |
           VERSION=${GITHUB_REF_NAME#v}
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           sed -i "s/pkgver=.*/pkgver=$VERSION/" ./scripts/PKGBUILD
+      - name: Extract recent changes from changelog
+        env:
+          CHANGELOG_SOURCE_FILE: internal/changelog/changelog.md
+        run: |
+          {
+            echo "RECENT_CHANGES<<EOF"
+            echo ""
+            echo ""
+            ./scripts/extract-latest-changes-from-changelog.sh
+            echo EOF
+          } >> "$GITHUB_ENV"
       - name: Publish to AUR
         uses: KSXGitHub/github-actions-deploy-aur@v4.1.2
+        env:
+          CHANGELOG_SOURCE_FILE: CHANGELOG.md
         with:
           pkgname: excalidraw-desktop-bin
           pkgbuild: ./scripts/PKGBUILD
           commit_username: ${{ secrets.AUR_USERNAME }}
           commit_email: ${{ secrets.AUR_EMAIL }}
           ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
-          commit_message: "v${{ env.VERSION }}"
+          commit_message: "v${{ env.VERSION }}${{ env.RECENT_CHANGES }}"
           updpkgsums: true
