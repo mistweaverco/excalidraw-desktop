@@ -1,6 +1,6 @@
 [package]
 name = "excalidraw-desktop"
-version = "0.1.0"
+version = "0.1.1"
 description = "Unofficial desktop client for Excalidraw"
 authors = ["Marco Kellershoff <marco@mistweaverco.com>"]
 edition = "2021"

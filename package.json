@@ -1,6 +1,6 @@
 {
   "name": "excalidraw-desktop",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Unofficial, offline-first desktop client for Excalidraw on Windows, macOS, and Linux.",
   "license": "MIT",
@@ -14,7 +14,8 @@
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "changelog": "./scripts/generate-changelog.sh"
   },
   "dependencies": {
     "@excalidraw/excalidraw": "0.18.0",
@@ -34,11 +35,13 @@
     "@types/node": "25.6.0",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
+    "conventional-changelog": "7.2.0",
     "esbuild": "0.28.0",
     "svelte": "5.55.3",
     "svelte-check": "4.4.6",
     "typescript": "5.6.2",
-    "vite": "8.0.8"
+    "vite": "8.0.8",
+    "vite-plus": "0.1.16"
   },
   "packageManager": "pnpm@10.33.0"
 }
