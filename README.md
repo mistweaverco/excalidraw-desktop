@@ -5,7 +5,7 @@
 # Excalidraw Desktop
 
 [![Made with love][badge-made-with-love]][contributors]
-![Made with rust][badge-made-with-rust]
+[![Made with Tauri][badge-made-with-rust]][tauri]
 [![Latest release][badge-latest-release]][latest-release]
 [![Development status][badge-development-status]][development-status]
 [![Our manifesto][badge-our-manifesto]][our-manifesto]
@@ -50,6 +50,7 @@ there are currently only limited options.
 [badge-made-with-love]: https://mistweaverco.com/assets/badges/made-with-love.svg
 [badge-discord]: https://mistweaverco.com/assets/badges/discord.svg
 [badge-latest-release]: https://img.shields.io/github/v/release/mistweaverco/excalidraw-desktop?style=for-the-badge
+[tauri]: https://tauri.app/
 [discord]: https://mistweaverco.com/discord
 [our-manifesto]: https://mistweaverco.com/manifesto
 [development-status]: https://mistweaverco.com/roadmap?filter=excalidraw-desktop
