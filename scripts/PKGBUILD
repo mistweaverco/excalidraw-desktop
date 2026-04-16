@@ -15,5 +15,4 @@ sha256sums_x86_64=('AUTO_GENERATED')
 
 package() {
     install -Dm755 "${srcdir}/${pkgname}-${pkgver}.tar.gz" "${pkgdir}/usr/bin/excalidraw-desktop"
-    install -Dm644 "${srcdir}/LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
