@@ -18,9 +18,12 @@ sha256sums=('AUTO_GENERATED')
 package() {
   if [ -f "data.tar.xz" ]; then
     bsdtar -xf "data.tar.xz" -C "${pkgdir}"
-  else
+  elif [ -f "data.tar.gz" ]; then
     bsdtar -xf "data.tar.gz" -C "${pkgdir}"
+  elif [ -f "data.tar.zst" ]; then
+    bsdtar -xf "data.tar.zst" -C "${pkgdir}"
+  else
+    echo "Error: No data archive found in the source package."
+    exit 1
   fi
-  mkdir -p "${pkgdir}/usr/bin"
-  ln -sf "/opt/excalidraw-desktop/excalidraw-desktop" "${pkgdir}/usr/bin/excalidraw-desktop"
 }

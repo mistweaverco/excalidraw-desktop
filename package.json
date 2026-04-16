@@ -1,6 +1,6 @@
 {
   "name": "excalidraw-desktop",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": true,
   "description": "Unofficial, offline-first desktop client for Excalidraw on Windows, macOS, and Linux.",
   "license": "MIT",
