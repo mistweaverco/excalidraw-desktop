@@ -2,12 +2,12 @@
 
 # Fetch latest version from git tags and strip the leading 'v' if present
 VERSION=${VERSION:-$(git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//')}
-CHANGELOG_SOURCE_FILE=${SOURCE_FILE:-"CHANGELOG.md"}
+CHANGELOG_SOURCE_FILE=${CHANGELOG_SOURCE_FILE:-"CHANGELOG.md"}
 
 if [[ -f "$CHANGELOG_SOURCE_FILE" ]]; then
   if [[ -z "$VERSION" ]]; then
     echo "Error: could not determine VERSION from git tags." >&2
-    exit 1
+    exit 6
   fi
 
   # NOTE:
@@ -59,13 +59,13 @@ if [[ -f "$CHANGELOG_SOURCE_FILE" ]]; then
 
     if [[ -z "$latest_in_changelog" ]]; then
       echo "Error: could not parse any versions from $CHANGELOG_SOURCE_FILE" >&2
-      exit 1
+      exit 8
     fi
 
     extract_for_version "$latest_in_changelog"
   fi
   else
     echo "Error: $CHANGELOG_SOURCE_FILE not found."
-    exit 1
+    exit 5
 fi
 

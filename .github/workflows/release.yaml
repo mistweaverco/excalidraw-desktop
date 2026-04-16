@@ -293,17 +293,13 @@ jobs:
         env:
           CHANGELOG_SOURCE_FILE: CHANGELOG.md
         run: |
-          {
-            echo "RECENT_CHANGES<<EOF"
-            echo ""
-            echo ""
-            ./scripts/extract-latest-changes-from-changelog.sh
-            echo EOF
-          } >> "$GITHUB_ENV"
+          echo "RECENT_CHANGES<<EOF" > env_temp
+          echo "" >> env_temp
+          ./scripts/extract-latest-changes-from-changelog.sh >> env_temp
+          echo "EOF" >> env_temp
+          cat env_temp >> "$GITHUB_ENV"
       - name: Publish to AUR
         uses: KSXGitHub/github-actions-deploy-aur@v4.1.2
-        env:
-          CHANGELOG_SOURCE_FILE: CHANGELOG.md
         with:
           pkgname: excalidraw-desktop-bin
           pkgbuild: ./scripts/PKGBUILD
