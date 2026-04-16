@@ -1,7 +1,8 @@
 ## <small>0.1.3 (2026-04-16)</small>
 
-* chore(docs): update changelog ([ef1a50f](https://github.com/mistweaverco/excalidraw-desktop/commit/ef1a50f))
+* fix(PKGBUILD): package the app correctly for Arch Linux ([3cc2407](https://github.com/mistweaverco/excalidraw-desktop/commit/3cc2407))
 * fix(PKGBUILD): remove LICENSE file ([2d8f77f](https://github.com/mistweaverco/excalidraw-desktop/commit/2d8f77f))
+* chore(docs): update changelog ([ef1a50f](https://github.com/mistweaverco/excalidraw-desktop/commit/ef1a50f))
 * feat(ci): add depends on changelog ([325407a](https://github.com/mistweaverco/excalidraw-desktop/commit/325407a))
 
 ## <small>0.1.1 (2026-04-16)</small>
