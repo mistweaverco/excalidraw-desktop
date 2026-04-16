@@ -277,6 +277,8 @@ jobs:
       - name: Install dependencies
         run: pacman -Syu --noconfirm pacman-contrib git openssh
       - uses: actions/checkout@v6.0.2
+      - name: Remove changelog
+        run: rm -f CHANGELOG.md
       - name: Download changelog artifact
         uses: actions/download-artifact@v8.0.1
         with:
