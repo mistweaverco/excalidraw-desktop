@@ -2,7 +2,7 @@
 
 # Fetch latest version from git tags and strip the leading 'v' if present
 VERSION=${VERSION:-$(git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//')}
-CHANGELOG_OUT_FILE="CHANGELOG.md"
+CHANGELOG_OUT_FILE="${CHANGELOG_OUT_FILE-"CHANGELOG.md"}"
 TEMP_CONFIG=$(mktemp --suffix=".json")
 echo "{\"version\": \"$VERSION\", \"date\": \"$(date +%Y-%m-%d)\"}" > "$TEMP_CONFIG"
 
