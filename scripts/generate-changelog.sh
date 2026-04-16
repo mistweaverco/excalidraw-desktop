@@ -2,7 +2,7 @@
 
 # Fetch latest version from git tags and strip the leading 'v' if present
 VERSION=${VERSION:-$(git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//')}
-SOURCE_FILE="CHANGELOG.md"
+CHANGELOG_OUT_FILE="CHANGELOG.md"
 TEMP_CONFIG=$(mktemp --suffix=".json")
 echo "{\"version\": \"$VERSION\", \"date\": \"$(date +%Y-%m-%d)\"}" > "$TEMP_CONFIG"
 
@@ -23,7 +23,7 @@ if [[ -n "$CI" ]]; then
 fi
 
 ./node_modules/.bin/conventional-changelog \
-  -i "$SOURCE_FILE" \
+  -i "$CHANGELOG_OUT_FILE" \
   -s \
   -r 0 \
   -u \
@@ -42,7 +42,7 @@ if [[ -n "$CI" ]]; then
   fi
 fi
 
-if [[ ! -f "${SOURCE_FILE}" ]]; then
-  echo "ERROR: ${SOURCE_FILE} not found"
+if [[ ! -f "${CHANGELOG_OUT_FILE}" ]]; then
+  echo "ERROR: ${CHANGELOG_OUT_FILE} not found"
   exit 1
 fi
