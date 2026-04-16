@@ -54,6 +54,8 @@ jobs:
           path: tmp/CHANGELOG.md
           if-no-files-found: error
   build-linux:
+    needs:
+      - generate-changelog
     name: Build for Linux
     runs-on: ubuntu-latest
     steps:
@@ -109,6 +111,8 @@ jobs:
             src-tauri/target/release/bundle/appimage/
           if-no-files-found: error
   build-macos:
+    needs:
+      - generate-changelog
     name: Build for macOS
     runs-on: macos-latest
     steps:
@@ -193,6 +197,8 @@ jobs:
             src-tauri/target/release/bundle/macos/
           if-no-files-found: error
   build-windows:
+    needs:
+      - generate-changelog
     name: Build for Windows
     runs-on: windows-latest
     steps:
