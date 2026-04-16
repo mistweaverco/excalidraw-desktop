@@ -1,10 +1,12 @@
 ## Unreleased (2026-04-16)
 
+* fix(ci): extract changelog for aur commit message ([2e65c3f](https://github.com/mistweaverco/excalidraw-desktop/commit/2e65c3f))
 * fix(ci): remove changelog before downloading artifacts ([ee9bedd](https://github.com/mistweaverco/excalidraw-desktop/commit/ee9bedd))
 * chore(docs): add AI-POLICY.md ([8213431](https://github.com/mistweaverco/excalidraw-desktop/commit/8213431))
 * chore(docs): add CHANGELOG.md ([fc9b391](https://github.com/mistweaverco/excalidraw-desktop/commit/fc9b391))
 * chore(docs): add Tauri link to README.md ([12d1ce3](https://github.com/mistweaverco/excalidraw-desktop/commit/12d1ce3))
 * chore(docs): update CHANGELOG ([4b4b62b](https://github.com/mistweaverco/excalidraw-desktop/commit/4b4b62b))
+* chore(docs): update CHANGELOG.md ([9850139](https://github.com/mistweaverco/excalidraw-desktop/commit/9850139))
 * chore(docs): update README.md ([6cd3a78](https://github.com/mistweaverco/excalidraw-desktop/commit/6cd3a78))
 * feat(ci): auto CHANGELOG gen ([d031e09](https://github.com/mistweaverco/excalidraw-desktop/commit/d031e09))
 * feat(ci): re-use cache ([41744b4](https://github.com/mistweaverco/excalidraw-desktop/commit/41744b4))
