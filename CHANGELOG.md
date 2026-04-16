@@ -1,18 +1,24 @@
+## <small>0.1.2 (2026-04-16)</small>
+
+* fix(PKGBUILD): remove LICENSE file ([2d8f77f](https://github.com/mistweaverco/excalidraw-desktop/commit/2d8f77f))
+* feat(ci): add depends on changelog ([325407a](https://github.com/mistweaverco/excalidraw-desktop/commit/325407a))
+
 ## <small>0.1.1 (2026-04-16)</small>
 
-* fix(ci): changelog generation ([c30ade8](https://github.com/mistweaverco/excalidraw-desktop/commit/c30ade8))
-* fix(ci): extract changelog for aur commit message ([2e65c3f](https://github.com/mistweaverco/excalidraw-desktop/commit/2e65c3f))
-* fix(ci): remove changelog before downloading artifacts ([ee9bedd](https://github.com/mistweaverco/excalidraw-desktop/commit/ee9bedd))
-* fix(ci): update changelog generation script ([8e6dc77](https://github.com/mistweaverco/excalidraw-desktop/commit/8e6dc77))
-* fix(ci): workaround for changelog file not being found ([de00f06](https://github.com/mistweaverco/excalidraw-desktop/commit/de00f06))
 * chore(docs): add AI-POLICY.md ([8213431](https://github.com/mistweaverco/excalidraw-desktop/commit/8213431))
 * chore(docs): add CHANGELOG.md ([fc9b391](https://github.com/mistweaverco/excalidraw-desktop/commit/fc9b391))
 * chore(docs): add Tauri link to README.md ([12d1ce3](https://github.com/mistweaverco/excalidraw-desktop/commit/12d1ce3))
+* chore(docs): update changelog ([60ee9a3](https://github.com/mistweaverco/excalidraw-desktop/commit/60ee9a3))
 * chore(docs): update CHANGELOG ([4b4b62b](https://github.com/mistweaverco/excalidraw-desktop/commit/4b4b62b))
 * chore(docs): update CHANGELOG.md ([cf9faf6](https://github.com/mistweaverco/excalidraw-desktop/commit/cf9faf6))
 * chore(docs): update CHANGELOG.md ([7aeac20](https://github.com/mistweaverco/excalidraw-desktop/commit/7aeac20))
 * chore(docs): update CHANGELOG.md ([9850139](https://github.com/mistweaverco/excalidraw-desktop/commit/9850139))
 * chore(docs): update README.md ([6cd3a78](https://github.com/mistweaverco/excalidraw-desktop/commit/6cd3a78))
+* fix(ci): changelog generation ([c30ade8](https://github.com/mistweaverco/excalidraw-desktop/commit/c30ade8))
+* fix(ci): extract changelog for aur commit message ([2e65c3f](https://github.com/mistweaverco/excalidraw-desktop/commit/2e65c3f))
+* fix(ci): remove changelog before downloading artifacts ([ee9bedd](https://github.com/mistweaverco/excalidraw-desktop/commit/ee9bedd))
+* fix(ci): update changelog generation script ([8e6dc77](https://github.com/mistweaverco/excalidraw-desktop/commit/8e6dc77))
+* fix(ci): workaround for changelog file not being found ([de00f06](https://github.com/mistweaverco/excalidraw-desktop/commit/de00f06))
 * feat(ci): auto CHANGELOG gen ([d031e09](https://github.com/mistweaverco/excalidraw-desktop/commit/d031e09))
 * feat(ci): re-use cache ([41744b4](https://github.com/mistweaverco/excalidraw-desktop/commit/41744b4))
 * feat(docs): add a LICENSE file ([524cc11](https://github.com/mistweaverco/excalidraw-desktop/commit/524cc11))
