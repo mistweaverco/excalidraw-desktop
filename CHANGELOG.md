@@ -3,7 +3,7 @@
 * fix(ci): changelog generation ([c30ade8](https://github.com/mistweaverco/excalidraw-desktop/commit/c30ade8))
 * fix(ci): extract changelog for aur commit message ([2e65c3f](https://github.com/mistweaverco/excalidraw-desktop/commit/2e65c3f))
 * fix(ci): remove changelog before downloading artifacts ([ee9bedd](https://github.com/mistweaverco/excalidraw-desktop/commit/ee9bedd))
-* fix(ci): update changelog generation script ([4261316](https://github.com/mistweaverco/excalidraw-desktop/commit/4261316))
+* fix(ci): update changelog generation script ([8e6dc77](https://github.com/mistweaverco/excalidraw-desktop/commit/8e6dc77))
 * fix(ci): workaround for changelog file not being found ([de00f06](https://github.com/mistweaverco/excalidraw-desktop/commit/de00f06))
 * chore(docs): add AI-POLICY.md ([8213431](https://github.com/mistweaverco/excalidraw-desktop/commit/8213431))
 * chore(docs): add CHANGELOG.md ([fc9b391](https://github.com/mistweaverco/excalidraw-desktop/commit/fc9b391))
