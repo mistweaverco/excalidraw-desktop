@@ -1,6 +1,11 @@
-## <small>0.1.6 (2026-04-16)</small>
+## 0.2.0 (2026-04-16)
 
 * feat(app): add theme switcher support ([b88b0ec](https://github.com/mistweaverco/excalidraw-desktop/commit/b88b0ec))
+* feat(dx): add a script to help bump versions ([5091037](https://github.com/mistweaverco/excalidraw-desktop/commit/5091037))
+* chore(docs): update changelog ([7ab3f1b](https://github.com/mistweaverco/excalidraw-desktop/commit/7ab3f1b))
+
+## <small>0.1.5 (2026-04-16)</small>
+
 * chore(docs): update changelog ([a23227a](https://github.com/mistweaverco/excalidraw-desktop/commit/a23227a))
 * fix(scripts): finally PKGBUILD is fixed ([e68d858](https://github.com/mistweaverco/excalidraw-desktop/commit/e68d858))
 
