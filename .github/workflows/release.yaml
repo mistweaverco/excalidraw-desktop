@@ -291,7 +291,7 @@ jobs:
           sed -i "s/pkgver=.*/pkgver=$VERSION/" ./scripts/PKGBUILD
       - name: Extract recent changes from changelog
         env:
-          CHANGELOG_SOURCE_FILE: internal/changelog/changelog.md
+          CHANGELOG_SOURCE_FILE: CHANGELOG.md
         run: |
           {
             echo "RECENT_CHANGES<<EOF"
