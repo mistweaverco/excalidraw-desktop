@@ -7,7 +7,14 @@ TEMP_CONFIG=$(mktemp --suffix=".json")
 echo "{\"version\": \"$VERSION\", \"date\": \"$(date +%Y-%m-%d)\"}" > "$TEMP_CONFIG"
 
 echo "Generating changelog for version: ${VERSION}"
-echo "Using PKG_VERSION: ${PKG_VERSION}"
+
+# conventional-changelog is commit/tag based. It cannot include uncommitted changes.
+# By default we generate a clean "release" changelog (no "Unreleased" section).
+# Set CHANGELOG_INCLUDE_UNRELEASED=1 if you explicitly want an "Unreleased" section.
+UNRELEASED_FLAG=()
+if [[ -n "${CHANGELOG_INCLUDE_UNRELEASED}" ]]; then
+  UNRELEASED_FLAG=(-u)
+fi
 
 if [[ -n "$CI" ]]; then
   # HACK:
@@ -26,7 +33,7 @@ fi
   -i "$CHANGELOG_OUT_FILE" \
   -s \
   -r 0 \
-  -u \
+  "${UNRELEASED_FLAG[@]}" \
   -k "$TEMP_CONFIG" \
   -c "$TEMP_CONFIG"
 
