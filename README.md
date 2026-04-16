@@ -42,8 +42,6 @@ has gained immense popularity for its simplicity and versatility.
 However, for users that may prefer an offline-first experience,
 there are currently only limited options.
 
-
-
 [badge-made-with-rust]: https://mistweaverco.com/assets/badges/rust.svg
 [badge-development-status]: https://mistweaverco.com/assets/badges/development-status.svg
 [badge-our-manifesto]: https://mistweaverco.com/assets/badges/our-manifesto.svg

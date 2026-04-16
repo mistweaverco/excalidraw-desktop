@@ -1,11 +1,22 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-use tauri::{Emitter, Manager, Url, WebviewUrl, WebviewWindowBuilder};
+use tauri::{Emitter, Manager, Theme, Url, WebviewUrl, WebviewWindowBuilder};
 #[cfg(desktop)]
 use tauri::webview::NewWindowResponse;
 
 #[tauri::command]
 fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
+}
+
+#[tauri::command]
+fn set_theme(app: tauri::AppHandle, theme: Option<String>) -> Result<(), String> {
+    let parsed = match theme.as_deref().map(|s| s.trim().to_lowercase()) {
+        Some(t) if t == "dark" => Some(Theme::Dark),
+        Some(t) if t == "light" => Some(Theme::Light),
+        _ => None,
+    };
+    app.set_theme(parsed);
+    Ok(())
 }
 
 /// Mirrors `isExcalidrawComAddLibraryInstallUrl` in `+layout.svelte`. The libraries webview
@@ -140,7 +151,7 @@ pub fn run() {
             }
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![greet, open_libraries_window])
+        .invoke_handler(tauri::generate_handler![greet, set_theme, open_libraries_window])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
