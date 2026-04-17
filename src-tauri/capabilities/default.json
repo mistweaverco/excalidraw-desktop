@@ -6,8 +6,17 @@
   "permissions": [
     "core:default",
     "core:webview:allow-create-webview-window",
+    "core:window:allow-start-dragging",
+    "core:window:allow-start-resize-dragging",
     "core:window:allow-set-size",
     "core:window:allow-inner-size",
+    "core:window:allow-outer-size",
+    "core:window:allow-destroy",
+    "core:window:allow-minimize",
+    "core:window:allow-toggle-maximize",
+    "core:window:allow-set-fullscreen",
+    "core:window:allow-is-fullscreen",
+    "core:window:allow-close",
     "dialog:allow-save",
     "dialog:allow-open",
     {

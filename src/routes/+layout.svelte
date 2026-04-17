@@ -3,42 +3,56 @@
   import type { Snippet } from "svelte";
   import { browser } from "$app/environment";
   import { base } from "$app/paths";
+  import Titlebar from "$lib/ui/Titlebar.svelte";
+  import ResizeHandles from "$lib/ui/ResizeHandles.svelte";
+  import "../app.css";
 
   let { children }: { children: Snippet } = $props();
 
-  const KEY = "excalidraw:window:size:v1";
+  /**
+   * We persist **outer** size + `frame` (outer−inner at save time). `setSize` only accepts **inner**
+   * size, so on restore: inner = outer − frame. When inner===outer (common on Linux), frame is 0.
+   */
+  const KEY = "excalidraw:window:size";
+  /** Set `localStorage` to `"1"` to log window-size decisions (same tag in dev without setting). */
+  const WINDOW_SIZE_DEBUG_KEY = "excalidraw:window:size:debug";
   const APP_HOME_KEY = "excalidraw:appHome";
 
-  type StoredSize = { width: number; height: number };
-
-  function readStoredSize(): StoredSize | null {
+  function windowSizeDebugEnabled(): boolean {
+    if (!browser || typeof localStorage === "undefined") return false;
     try {
-      const raw = localStorage.getItem(KEY);
-      if (!raw) return null;
-      const parsed = JSON.parse(raw) as Partial<StoredSize>;
-      if (typeof parsed.width !== "number" || typeof parsed.height !== "number") return null;
-      if (!Number.isFinite(parsed.width) || !Number.isFinite(parsed.height)) return null;
-      if (parsed.width < 200 || parsed.height < 200) return null;
-      return { width: parsed.width, height: parsed.height };
+      return import.meta.env.DEV || localStorage.getItem(WINDOW_SIZE_DEBUG_KEY) === "1";
     } catch {
-      return null;
+      return import.meta.env.DEV;
     }
   }
 
-  function writeStoredSize(size: StoredSize) {
+  function logWindowSize(...args: unknown[]): void {
+    if (!windowSizeDebugEnabled()) return;
+    console.info("[window-size]", ...args);
+  }
+
+  type StoredWindowSizeOuter = {
+    width: number;
+    height: number;
+    physical: true;
+    extent: "outer";
+    frame: { w: number; h: number };
+  };
+
+  function writeStoredOuter(outer: { width: number; height: number }, frame: { w: number; h: number }) {
     try {
-      localStorage.setItem(KEY, JSON.stringify(size));
+      const payload: StoredWindowSizeOuter = {
+        width: outer.width,
+        height: outer.height,
+        physical: true,
+        extent: "outer",
+        frame: { w: frame.w, h: frame.h },
+      };
+      localStorage.setItem(KEY, JSON.stringify(payload));
     } catch {
       // ignore (quota/permissions)
     }
-  }
-
-  function debounce<TArgs extends unknown[]>(fn: (...args: TArgs) => void, waitMs: number) {
-    let t: ReturnType<typeof setTimeout> | null = null;
-    return (...args: TArgs) => {
-      if (t) clearTimeout(t);
-      t = setTimeout(() => fn(...args), waitMs);
-    };
   }
 
   function isExcalidrawSiteHostname(hostname: string): boolean {
@@ -185,11 +199,21 @@
   }
 
   let showBrowserAppHandoff = $state(false);
+  let showTitlebar = $state(false);
 
   onMount(() => {
     if (browser) {
       ensureAppHomeStored();
       const isTauri = Boolean((globalThis as any).__TAURI_INTERNALS__);
+      showTitlebar = isTauri;
+      if (isTauri) {
+        // Frontend-ready ping: now that the webview has mounted, ask Rust to restore window state.
+        void import("@tauri-apps/api/core")
+          .then(({ invoke }) => invoke("restore_main_window_state"))
+          .catch(() => {
+            // ignore
+          });
+      }
       if (!isTauri) {
         const hasQ =
           window.location.search.includes("addLibrary=") ||
@@ -289,69 +313,26 @@
     document.addEventListener("click", onLinkClick, true);
     return () => document.removeEventListener("click", onLinkClick, true);
   });
-
-  onMount(() => {
-    let unlisten: (() => void) | null = null;
-
-    (async () => {
-      let isTauriFn: (() => boolean) | null = null;
-      try {
-        const core = await import("@tauri-apps/api/core");
-        isTauriFn = core.isTauri;
-      } catch {
-        // ignore
-      }
-
-      if (!(isTauriFn?.() || (globalThis as any).__TAURI_INTERNALS__)) return;
-
-      let api: typeof import("@tauri-apps/api/window");
-      try {
-        api = await import("@tauri-apps/api/window");
-      } catch {
-        return;
-      }
-
-      const win = api.getCurrentWindow();
-      const LogicalSize = api.LogicalSize;
-
-      const stored = readStoredSize();
-      if (stored) {
-        try {
-          await win.setSize(new LogicalSize(stored.width, stored.height));
-        } catch (ex) {
-          console.error(ex);
-        }
-      }
-
-      const saveSize = debounce(async () => {
-        try {
-          const [size, scale] = await Promise.all([win.innerSize(), win.scaleFactor()]);
-          const width = Math.round(size.width / scale);
-          const height = Math.round(size.height / scale);
-          writeStoredSize({ width, height });
-        } catch (ex) {
-          console.error(ex);
-        }
-      }, 1000);
-
-      unlisten = await win.onResized(() => {
-        saveSize();
-      });
-    })();
-
-    return () => {
-      unlisten?.();
-    };
-  });
 </script>
 
 {#if showBrowserAppHandoff}
   <div
-    style="position:fixed;z-index:99999;top:0;left:0;right:0;padding:10px 14px;font:14px system-ui,sans-serif;background:#1e1e2e;color:#eee;border-bottom:1px solid #444;display:flex;align-items:center;gap:12px;flex-wrap:wrap;"
+    class="fixed top-0 left-0 right-0 z-[99999] px-4 py-2.5 text-sm bg-base-200 text-base-content border-b border-base-300 flex items-center gap-3 flex-wrap"
   >
     <span>Open this library install in the desktop app (http links cannot switch to the app automatically).</span>
-    <a href={excalidrawHandoffHref()} style="color:#89b4fa;font-weight:600;">Open in Excalidraw Deskop</a>
+    <a href={excalidrawHandoffHref()} class="link link-primary font-semibold">Open in Excalidraw Deskop</a>
   </div>
 {/if}
 
-{@render children()}
+{#if showTitlebar}
+  <Titlebar />
+  <ResizeHandles />
+{/if}
+
+<div
+  style={showTitlebar
+    ? "--app-titlebar-height:36px;height:100vh;overflow:hidden;"
+    : "--app-titlebar-height:0px;height:100vh;overflow:hidden;"}
+>
+  {@render children()}
+</div>

@@ -35,11 +35,8 @@ export async function loadLibraryFromIndexedDb(): Promise<LibraryPersistedShape 
         }
         try {
           const parsed = JSON.parse(row) as LibraryPersistedShape;
-          if (parsed?.libraryItems) {
-            resolve(parsed);
-          } else {
-            resolve(null);
-          }
+          if (parsed?.libraryItems) resolve(parsed);
+          else resolve(null);
         } catch {
           resolve(null);
         }

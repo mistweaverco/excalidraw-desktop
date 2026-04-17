@@ -6,15 +6,13 @@
   "build": {
     "beforeDevCommand": "pnpm dev",
     "devUrl": "http://localhost:1420",
-    "beforeBuildCommand": "pnpm build:prepare && pnpm build:excalidraw && pnpm build:svelte",
+    "beforeBuildCommand": "pnpm build:prepare && pnpm build:svelte",
     "frontendDist": "../build"
   },
   "plugins": {
     "deep-link": {
       "desktop": {
-        "schemes": [
-          "excalidraw"
-        ]
+        "schemes": ["excalidraw"]
       }
     }
   },
@@ -23,7 +21,9 @@
       {
         "title": "Excalidraw Desktop",
         "width": 800,
-        "height": 600
+        "height": 600,
+        "decorations": false,
+        "label": "main"
       }
     ],
     "security": {
