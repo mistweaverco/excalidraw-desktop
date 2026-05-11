@@ -1,8 +1,16 @@
+## 0.5.0 (2026-05-11)
+
+* chore(icons): update icons (#1) ([7c569d5](https://github.com/mistweaverco/excalidraw-desktop/commit/7c569d5)), closes [#1](https://github.com/mistweaverco/excalidraw-desktop/issues/1)
+
 ## 0.4.0 (2026-04-20)
 
+* chore(release): bump version to 0.4.0 ([6b7be1e](https://github.com/mistweaverco/excalidraw-desktop/commit/6b7be1e))
 * feat(app): complete rewrite without excalidraw dependency ([6ef5a29](https://github.com/mistweaverco/excalidraw-desktop/commit/6ef5a29))
-* feat(scripts): add depends to PKGBUILD ([8e8c64f](https://github.com/mistweaverco/excalidraw-desktop/commit/8e8c64f))
+
+## 0.3.0 (2026-04-17)
+
 * chore(release): bump to 0.3.0 ([bef0c58](https://github.com/mistweaverco/excalidraw-desktop/commit/bef0c58))
+* feat(scripts): add depends to PKGBUILD ([8e8c64f](https://github.com/mistweaverco/excalidraw-desktop/commit/8e8c64f))
 
 ## 0.2.0 (2026-04-16)
 
