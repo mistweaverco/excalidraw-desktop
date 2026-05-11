@@ -1,6 +1,7 @@
-## 0.5.0 (2026-05-11)
+## <small>0.5.1 (2026-05-11)</small>
 
-* chore(icons): update icons (#1) ([7c569d5](https://github.com/mistweaverco/excalidraw-desktop/commit/7c569d5)), closes [#1](https://github.com/mistweaverco/excalidraw-desktop/issues/1)
+* fix(build): pin tauri version ([faef40d](https://github.com/mistweaverco/excalidraw-desktop/commit/faef40d))
+* chore(version): bump ([c452ab7](https://github.com/mistweaverco/excalidraw-desktop/commit/c452ab7))
 
 ## 0.4.0 (2026-04-20)
 
