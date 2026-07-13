@@ -1,6 +1,15 @@
+## <small>0.5.2 (2026-07-13)</small>
+
+* fix(libraryManager): allow v2 lib imports ([789af94](https://github.com/mistweaverco/excalidraw-desktop/commit/789af94))
+
 ## <small>0.5.1 (2026-05-11)</small>
 
+* Revert "chore(icons): update icons (#1)" (#2) ([b004508](https://github.com/mistweaverco/excalidraw-desktop/commit/b004508)), closes [#1](https://github.com/mistweaverco/excalidraw-desktop/issues/1) [#2](https://github.com/mistweaverco/excalidraw-desktop/issues/2) [#1](https://github.com/mistweaverco/excalidraw-desktop/issues/1)
+
+## 0.5.0 (2026-05-11)
+
 * fix(build): pin tauri version ([faef40d](https://github.com/mistweaverco/excalidraw-desktop/commit/faef40d))
+* chore(icons): update icons (#1) ([7c569d5](https://github.com/mistweaverco/excalidraw-desktop/commit/7c569d5)), closes [#1](https://github.com/mistweaverco/excalidraw-desktop/issues/1)
 * chore(version): bump ([c452ab7](https://github.com/mistweaverco/excalidraw-desktop/commit/c452ab7))
 
 ## 0.4.0 (2026-04-20)
@@ -52,14 +61,7 @@
 * chore(docs): update CHANGELOG.md ([7aeac20](https://github.com/mistweaverco/excalidraw-desktop/commit/7aeac20))
 * chore(docs): update CHANGELOG.md ([9850139](https://github.com/mistweaverco/excalidraw-desktop/commit/9850139))
 * chore(docs): update README.md ([6cd3a78](https://github.com/mistweaverco/excalidraw-desktop/commit/6cd3a78))
-* fix: PKGBUILD ([a612904](https://github.com/mistweaverco/excalidraw-desktop/commit/a612904))
-* fix: release.sh ([32b533f](https://github.com/mistweaverco/excalidraw-desktop/commit/32b533f))
-* fix: release.sh ([bc16fe0](https://github.com/mistweaverco/excalidraw-desktop/commit/bc16fe0))
-* fix: release.sh ([5237899](https://github.com/mistweaverco/excalidraw-desktop/commit/5237899))
-* fix: release.sh ([d13f51b](https://github.com/mistweaverco/excalidraw-desktop/commit/d13f51b))
-* fix: release.yaml ([9254314](https://github.com/mistweaverco/excalidraw-desktop/commit/9254314))
 * fix(ci): changelog generation ([c30ade8](https://github.com/mistweaverco/excalidraw-desktop/commit/c30ade8))
-* fix(ci): downloading full paths ([0a1f83c](https://github.com/mistweaverco/excalidraw-desktop/commit/0a1f83c))
 * fix(ci): extract changelog for aur commit message ([2e65c3f](https://github.com/mistweaverco/excalidraw-desktop/commit/2e65c3f))
 * fix(ci): remove changelog before downloading artifacts ([ee9bedd](https://github.com/mistweaverco/excalidraw-desktop/commit/ee9bedd))
 * fix(ci): update changelog generation script ([8e6dc77](https://github.com/mistweaverco/excalidraw-desktop/commit/8e6dc77))
@@ -71,11 +73,12 @@
 
 ## 0.1.0 (2026-04-13)
 
-* chore(ci): another try ([b54c99a](https://github.com/mistweaverco/excalidraw-desktop/commit/b54c99a))
-* chore(ci): debug ([1e57957](https://github.com/mistweaverco/excalidraw-desktop/commit/1e57957))
-* chore(ci): remove unused env ([c1947ea](https://github.com/mistweaverco/excalidraw-desktop/commit/c1947ea))
-* chore(ci): update deps ([18160b8](https://github.com/mistweaverco/excalidraw-desktop/commit/18160b8))
-* chore(ci): update release workflow ([f69e9a8](https://github.com/mistweaverco/excalidraw-desktop/commit/f69e9a8))
+* fix: PKGBUILD ([a612904](https://github.com/mistweaverco/excalidraw-desktop/commit/a612904))
+* fix: release.sh ([32b533f](https://github.com/mistweaverco/excalidraw-desktop/commit/32b533f))
+* fix: release.sh ([bc16fe0](https://github.com/mistweaverco/excalidraw-desktop/commit/bc16fe0))
+* fix: release.sh ([5237899](https://github.com/mistweaverco/excalidraw-desktop/commit/5237899))
+* fix: release.sh ([d13f51b](https://github.com/mistweaverco/excalidraw-desktop/commit/d13f51b))
+* fix: release.yaml ([9254314](https://github.com/mistweaverco/excalidraw-desktop/commit/9254314))
 * fix(app): lib.rs ([b0bac83](https://github.com/mistweaverco/excalidraw-desktop/commit/b0bac83))
 * fix(ci): add a bunch of linux dependencies to the release workflow ([42a4ed7](https://github.com/mistweaverco/excalidraw-desktop/commit/42a4ed7))
 * fix(ci): add missing dependency for release workflow ([1cfcdd8](https://github.com/mistweaverco/excalidraw-desktop/commit/1cfcdd8))
@@ -85,6 +88,7 @@
 * fix(ci): artifact paths ([a66a9e7](https://github.com/mistweaverco/excalidraw-desktop/commit/a66a9e7))
 * fix(ci): artifact paths ([050e5b3](https://github.com/mistweaverco/excalidraw-desktop/commit/050e5b3))
 * fix(ci): asset paths ([080c8d7](https://github.com/mistweaverco/excalidraw-desktop/commit/080c8d7))
+* fix(ci): downloading full paths ([0a1f83c](https://github.com/mistweaverco/excalidraw-desktop/commit/0a1f83c))
 * fix(ci): fix package names ([d5c3ea1](https://github.com/mistweaverco/excalidraw-desktop/commit/d5c3ea1))
 * fix(ci): macos artifact paths ([fd82c67](https://github.com/mistweaverco/excalidraw-desktop/commit/fd82c67))
 * fix(ci): macos notary tool + hard-coded VERSION ([7e40b2e](https://github.com/mistweaverco/excalidraw-desktop/commit/7e40b2e))
@@ -101,5 +105,10 @@
 * fix(ci): vp run build instead of vp build ([13a54f4](https://github.com/mistweaverco/excalidraw-desktop/commit/13a54f4))
 * fix(ci): wrap in vp run build again ([641c125](https://github.com/mistweaverco/excalidraw-desktop/commit/641c125))
 * fix(ci): wrong macos path on signing step ([51f49b6](https://github.com/mistweaverco/excalidraw-desktop/commit/51f49b6))
+* chore(ci): another try ([b54c99a](https://github.com/mistweaverco/excalidraw-desktop/commit/b54c99a))
+* chore(ci): debug ([1e57957](https://github.com/mistweaverco/excalidraw-desktop/commit/1e57957))
+* chore(ci): remove unused env ([c1947ea](https://github.com/mistweaverco/excalidraw-desktop/commit/c1947ea))
+* chore(ci): update deps ([18160b8](https://github.com/mistweaverco/excalidraw-desktop/commit/18160b8))
+* chore(ci): update release workflow ([f69e9a8](https://github.com/mistweaverco/excalidraw-desktop/commit/f69e9a8))
 * feat(ci): add key to rust cache ([c2f3bd3](https://github.com/mistweaverco/excalidraw-desktop/commit/c2f3bd3))
 * Initial import ([f7192bc](https://github.com/mistweaverco/excalidraw-desktop/commit/f7192bc))
