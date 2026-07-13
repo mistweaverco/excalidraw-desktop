@@ -6,6 +6,40 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
+function extractLibraryItemName(elements: ExcalidrawElement[]): string | null {
+  for (const el of elements) {
+    if (el.type === "text" && typeof el.text === "string") {
+      const text = el.text.trim();
+      if (text) return text;
+    }
+  }
+  return null;
+}
+
+function libraryItemsFromV1Library(library: unknown[]): LibraryItem[] {
+  const now = Date.now();
+  return library
+    .filter((entry): entry is ExcalidrawElement[] => Array.isArray(entry))
+    .map((elements, index) => {
+      const id = `lib_${Math.random().toString(16).slice(2)}`;
+      const name = extractLibraryItemName(elements) ?? `Library item ${index + 1}`;
+      return { id, name, group: null, tags: [], elements, created: now, updated: now };
+    });
+}
+
+function libraryItemsFromV2LibraryItems(libraryItems: unknown[]): LibraryItem[] {
+  return libraryItems.map((it: any) => {
+    const id = typeof it?.id === "string" ? it.id : `lib_${Math.random().toString(16).slice(2)}`;
+    const name = typeof it?.name === "string" && it.name.trim() ? it.name.trim() : "Library item";
+    const elements = Array.isArray(it?.elements) ? (it.elements as ExcalidrawElement[]) : [];
+    const ts = typeof it?.created === "number" ? it.created : Date.now();
+    const upd = typeof it?.updated === "number" ? it.updated : ts;
+    const tags = Array.isArray(it?.tags) ? it.tags.filter((t: any) => typeof t === "string") : [];
+    const group = typeof it?.group === "string" ? it.group : null;
+    return { id, name, elements, tags, group, created: ts, updated: upd } satisfies LibraryItem;
+  });
+}
+
 function isAllowedLibraryUrl(libraryUrl: string): boolean {
   try {
     const u = new URL(libraryUrl);
@@ -35,18 +69,15 @@ function normalizeLoadedLibrary(raw: unknown): LibraryStateV2 {
     return raw as unknown as LibraryStateV2;
   }
 
-  // Old schema (existing app): { libraryItems: unknown }
+  // v2 schema (Excalidraw web): { libraryItems: unknown }
   if (isRecord(raw) && "libraryItems" in raw && Array.isArray((raw as any).libraryItems)) {
-    const items = ((raw as any).libraryItems as any[]).map((it) => {
-      const id = typeof it?.id === "string" ? it.id : `lib_${Math.random().toString(16).slice(2)}`;
-      const name = typeof it?.name === "string" && it.name.trim() ? it.name.trim() : "Untitled";
-      const elements = Array.isArray(it?.elements) ? (it.elements as ExcalidrawElement[]) : [];
-      const ts = typeof it?.created === "number" ? it.created : Date.now();
-      const upd = typeof it?.updated === "number" ? it.updated : ts;
-      const tags = Array.isArray(it?.tags) ? it.tags.filter((t: any) => typeof t === "string") : [];
-      const group = typeof it?.group === "string" ? it.group : null;
-      return { id, name, elements, tags, group, created: ts, updated: upd } satisfies LibraryItem;
-    });
+    const items = libraryItemsFromV2LibraryItems((raw as any).libraryItems);
+    return { schema: "excalidraw-desktop-library", version: 2, items };
+  }
+
+  // Legacy v1 schema: { type: "excalidrawlib", version: 1, library: ExcalidrawElement[][] }
+  if (isRecord(raw) && "library" in raw && Array.isArray((raw as any).library)) {
+    const items = libraryItemsFromV1Library((raw as any).library);
     return { schema: "excalidraw-desktop-library", version: 2, items };
   }
 
@@ -98,18 +129,18 @@ export async function importLibraryFromUrl(
   const json = (await res.json()) as unknown;
   if (!isRecord(json)) return null;
 
-  // Excalidraw library payload usually includes `libraryItems`.
+  // Excalidraw supports both v2 (`libraryItems`) and legacy v1 (`library`) payloads.
   const libraryItems = (json as any).libraryItems;
-  if (!Array.isArray(libraryItems)) return null;
+  if (Array.isArray(libraryItems)) {
+    return libraryItemsFromV2LibraryItems(libraryItems);
+  }
 
-  const items: LibraryItem[] = libraryItems.map((it: any) => {
-    const id = typeof it?.id === "string" ? it.id : `lib_${Math.random().toString(16).slice(2)}`;
-    const name = typeof it?.name === "string" && it.name.trim() ? it.name.trim() : "Library item";
-    const elements = Array.isArray(it?.elements) ? (it.elements as ExcalidrawElement[]) : [];
-    const created = Date.now();
-    return { id, name, group: null, tags: [], elements, created, updated: created };
-  });
-  return items;
+  const library = (json as any).library;
+  if (Array.isArray(library)) {
+    return libraryItemsFromV1Library(library);
+  }
+
+  return null;
 }
 
 export function mergeLibraryItems(
